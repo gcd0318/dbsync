@@ -13,14 +13,14 @@ class Config(object):
             if self.conf.has_section('cluster'):
                 for key in self.conf.options('cluster'):
                     res[key] = self.conf.get('cluster', key)
-            if self.conf.has_section('local'):
-                for key in self.conf.options('local'):
-                    res[key] = self.conf.get('local', key)
+            if self.conf.has_section('node'):
+                for key in self.conf.options('node'):
+                    res[key] = self.conf.get('node', key)
         elif section is None:
             if self.conf.has_option('cluster', option):
                 res = self.conf.get('cluster', option)
-            if self.conf.has_option('local', option):
-                res = self.conf.get('local', option)
+            if self.conf.has_option('node', option):
+                res = self.conf.get('node', option)
         elif option is None:
             if self.conf.has_section(section):
                 for key in self.conf.options(section):
@@ -51,9 +51,9 @@ if '__main__' == __name__:
     conf = Config('db.conf')
     conf.write('cluster', 'test', 'test1')
     print(conf.read())
-    conf.write('local', 'test', 'test2')
+    conf.write('node', 'test', 'test2')
     print(conf.read())
-    conf.remove('local', 'test')
+    conf.remove('node', 'test')
     conf.remove('cluster', 'test')
     print(conf.read(option='dbname'))
     print(conf.read(option='cluster'))
