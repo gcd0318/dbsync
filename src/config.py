@@ -1,59 +1,63 @@
-import configparser
+from configparser import ConfigParser
 
-class Config(object):
+class Config(ConfigParser):
     def __init__(self, conf_fn):
+        ConfigParser.__init__(self)
         self.conf_fn = conf_fn
-        self.conf = configparser.ConfigParser()
-        self.conf.read(conf_fn)
+#        self = configparser.ConfigParser()
+        self.read(conf_fn)
 
-    def read(self, section=None, option=None):
+    def read_data(self, section=None, option=None):
         res = None
         if (section or option) is None:
             res = {}
-            if self.conf.has_section('cluster'):
-                for key in self.conf.options('cluster'):
-                    res[key] = self.conf.get('cluster', key)
-            if self.conf.has_section('node'):
-                for key in self.conf.options('node'):
-                    res[key] = self.conf.get('node', key)
+            if self.has_section('cluster'):
+                for key in self.options('cluster'):
+                    res[key] = self.get('cluster', key)
+            if self.has_section('node'):
+                for key in self.options('node'):
+                    res[key] = self.get('node', key)
         elif section is None:
-            if self.conf.has_option('cluster', option):
-                res = self.conf.get('cluster', option)
-            if self.conf.has_option('node', option):
-                res = self.conf.get('node', option)
+            if self.has_option('cluster', option):
+                res = self.get('cluster', option)
+            if self.has_option('node', option):
+                res = self.get('node', option)
         elif option is None:
-            if self.conf.has_section(section):
-                for key in self.conf.options(section):
-                    res[key] = self.conf.get(section, key)
+            res = {}
+            if self.has_section(section):
+                for key in self.options(section):
+                    res[key] = self.get(section, key)
         else:
-            res = self.conf.get(section, option)
+            res = self.get(section, option)
         return res
 
-    def write(self, section, option, value):
-        self.conf.set(section, option, value)
-        self.conf.write(open(self.conf_fn, "w"))
+    def write_data(self, section, option, value):
+        self.set(section, option, value)
+        self.write(open(self.conf_fn, "w"))
 
-    def remove(self, section, option):
+    def remove_data(self, section, option):
         if (section or option) is None:
-            for section in self.conf.sections():
-                self.conf.remove_section(section)
+            for section in self.sections():
+                self.remove_section(section)
         elif section is None:
-            for section in self.conf.sections():
-                self.conf.remove_option(section, option)
+            for section in self.sections():
+                self.remove_option(section, option)
         elif option is None:
-            self.conf.remove_section(section)
+            self.remove_section(section)
         else:
-            self.conf.remove_option(section, option)
-        self.conf.write(open(self.conf_fn, "w"))
+            self.remove_option(section, option)
+        self.write(open(self.conf_fn, "w"))
 
 
 if '__main__' == __name__:
     conf = Config('db.conf')
-    conf.write('cluster', 'test', 'test1')
-    print(conf.read())
-    conf.write('node', 'test', 'test2')
-    print(conf.read())
-    conf.remove('node', 'test')
-    conf.remove('cluster', 'test')
-    print(conf.read(option='dbname'))
-    print(conf.read(option='cluster'))
+    print(conf.read_data())
+    conf.write_data('cluster', 'test', 'test1')
+    print(conf.read_data())
+    conf.write_data('node', 'test', 'test2')
+    print(conf.read_data())
+    conf.remove_data('node', 'test')
+    conf.remove_data('cluster', 'test')
+    print(conf.read_data(option='dbname'))
+    print(conf.read_data(option='ips'))
+    print(conf.read_data(section='cluster'))
