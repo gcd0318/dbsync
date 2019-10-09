@@ -25,7 +25,6 @@ int tWrite(){
 
 void tRead(){
     char key[1024] = {0}, *value;
-    char key[1024] = {0}, *value;
 
     printf("key:");
     scanf("%s", key);

@@ -95,8 +95,6 @@ int writeCFG(const char *filename, const char *key, const char *value){
             sprintf(fline,"%s = %s\n", key, value);
         }
         
-        printf("fline = %s\n", fline);
-        puts(fline);
         strcat(ftemp, fline);
         
     }
