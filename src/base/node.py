@@ -5,31 +5,40 @@ from config import Config
 from base.cluster import Cluster
 
 class DB(object):
-    def __init__(self, username, password, host='127.0.0.1', port=5678, client_encoding="UTF-8", dbname='cicada', dbtype='postgresql'):
-        def _connect_postgresql(dbname, username, password, host, port=5678, client_encoding=client_encoding):
+    def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='cicada', dbtype='postgresql'):
+        def _connect_postgresql(dbname, username, password, host, port=5678, encoding=encoding):
             import psycopg2
-            return psycopg2.connect(dbname=dbname, user=username, password=password, port=port, host=host, client_encoding=client_encoding)
-        def _connect_mysql(dbname, username, password, host, port=5678, client_encoding=client_encoding):
+            return psycopg2.connect(dbname=dbname, user=username, password=password, port=port, host=host, client_encoding=encoding)
+        def _connect_mysql(dbname, username, password, host, port=5678, encoding=encoding):
             from mysql.connector import connection
-            return connection.MySQLConnection(database=dbname, user=username, password=password, port=port, host=host)
+            if "UTF-8" == encoding:
+                encoding = 'utf8'
+            return connection.MySQLConnection(database=dbname, user=username, password=password, port=port, host=host, charset=encoding)
 
         self.dbtype = dbtype
         self.conn = None
         if ('postgresql' == self.dbtype):
-            self.conn = _connect_postgresql(dbname, username, password, host, port, client_encoding)
+            self.conn = _connect_postgresql(dbname, username, password, host, port, encoding)
         elif(self.dbtype in ('mysql', 'mariadb')):
-            self.conn = _connect_mysql(dbname, username, password, host, port, client_encoding)
+            self.conn = _connect_mysql(dbname, username, password, host, port, encoding)
 
     def exec(self, sql):
+        sql = sql.strip()
+        action, *_ = sql.split()
+        action = action.lower()
+        res = None
         if(self.conn is not None):
-            with self.conn.cursor() as cursor:
-                cursor.execute(sql)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            if action in ('desc', 'select', 'show'):
+                res = cursor.fetchall()
+            elif 'insert' == action:
+                cursor.commit()
         else:
             pass
+        return res
 
 class Node(object):
-
-
     def __init__(self, conf_fn):
         conf = Config(conf_fn).read_data()
         self.ips = conf.get('ips')
