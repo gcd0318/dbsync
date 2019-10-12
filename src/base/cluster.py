@@ -15,3 +15,10 @@ class Cluster(object):
                 node.remove_peer(anode)
                 nodes.append(node)
         self.nodes = nodes
+
+    def exec_sql(self, sql):
+        for node in nodes:
+            node.db.exec(sql)
+
+if '__main__' == __name__:
+    c = Cluster()
