@@ -1,10 +1,12 @@
+class Client(self):
+    def __init__(self, server_ip):
+        self.server = server_ip
+
 class Cluster(object):
     def __init__(self, nodes=[]):
         self.nodes = nodes
 
     def add_node(self, anode):
-        for node in self.nodes:
-            node.add_peer(anode)
         if anode.is_alive():
             self.nodes.append(anode)
 
@@ -12,7 +14,6 @@ class Cluster(object):
         nodes = []
         for node in self.nodes:
             if node.ip != anode.ip:
-                node.remove_peer(anode)
                 nodes.append(node)
         self.nodes = nodes
 
