@@ -4,6 +4,8 @@ sys.path.append('..')
 from config import Config
 from dbaccess import DB
 #from base.cluster import Cluster
+from ..server import Server
+from ..client import Client
 
 class Node(object):
     def __init__(self, conf_fn):
@@ -51,6 +53,10 @@ class Node(object):
 
     def sync_data(self):
         pass
+
+    def service(self):
+        pass
+
 
 if '__main__' == __name__:
     node = Node('../db.conf')
