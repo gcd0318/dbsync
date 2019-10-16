@@ -8,15 +8,17 @@ from ..server import Server
 from ..client import Client
 
 class Node(object):
-    def __init__(self, conf_fn):
+    def __init__(self, conf_fn='../db.conf'):
         conf = Config(conf_fn).read_data()
+        self.ip = conf.get('ip', '127.0.0.1')
+        self.hb_port = int(conf.get('hb_port'))
         self.ips = conf.get('ips')
         self.db = None
         try:
             self.db = DB(
                 username=conf.get('username'),
                 password=conf.get('password'),
-                host='127.0.0.1',#conf.get('ip', '127.0.0.1'),
+                host=self.host,
                 port=int(conf.get('port')),
                 dbname=conf.get('dbname'),
                 dbtype=conf.get('db'))
@@ -24,7 +26,6 @@ class Node(object):
             print(err)
             import traceback
             print(traceback.format_exc())
-
 
     def status(self):
         res = True

@@ -2,7 +2,7 @@ import socket
 import logging
 import logging.handlers
 
-class Service(object):
+class Server(object):
     def __init__(self, name, host, port, log_level=logging.DEBUG):
         self.addr = (host, port)
         self.name = name
@@ -12,7 +12,13 @@ class Service(object):
         self.logger.addHandler(fh)
         self.logger.setLevel(log_level)
 
-    def start(self, socket_type='tcp', max_conn=10, buff_size=1024, quit_code=''):
+    def tcp_start(self, max_conn=10, buff_size=1024, quit_code=''):
+        self._start('tcp', max_conn, buff_size, quit_code)
+
+    def udp_start(self, max_conn=10, buff_size=1024, quit_code=''):
+        self._start('udp', max_conn, buff_size, quit_code)
+
+    def _start(self, socket_type='tcp', max_conn=10, buff_size=1024, quit_code=''):
         socket_type = socket_type.lower()
         self.logger.debug('starting ' + self.name + ' as a ' + socket_type)
 
@@ -58,7 +64,7 @@ if '__main__' == __name__:
     HOST = '192.168.56.101'
     PORT = 9999
 
-    serv = Service(name='sample', host=HOST, port=PORT)
+    serv = Server(name='sample', host=HOST, port=PORT)
     server_type = 'tcp'
     if 1 < len(sys.argv):
         server_type = sys.argv[1]
