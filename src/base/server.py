@@ -26,7 +26,7 @@ class Server(object):
             server_sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             server_sock.bind(self.addr)
             server_sock.listen(max_conn)
-            self.logger.debug('service started')
+            self.logger.debug(socket_type + 'service started: ' + str(self.addr))
             while True:
                 client_sock, addr = server_sock.accept()
                 self.logger.debug('connected from ' + str(addr))
@@ -38,9 +38,8 @@ class Server(object):
                 client_sock.close()
                 self.logger.debug(str(addr) + ' quit')
             server_sock.close()
-
         elif 'udp' == socket_type:
-            self.logger.debug('service started')
+            self.logger.debug(socket_type + 'service started: ' + str(self.addr))
             server_sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
             server_sock.bind(self.addr)
             while True:
@@ -49,15 +48,14 @@ class Server(object):
 
     def _answer(self, msg):
         res = msg
+        return res
 
     def reply(self, *req):
         self.logger.debug('REQ: ' + str(req))
         msg = ''
         for i in req:
             msg = msg + ' ' + str(i)
-        msg = msg.strip()
-
-        res = self._answer(msg)
+        res = self._answer(msg.strip())
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')
 
@@ -75,7 +73,7 @@ if '__main__' == __name__:
         server_type = sys.argv[1]
     while True:
         try:
-            serv.start(server_type)
+            serv._start(server_type)
         except Exception as err:
             print(err)
             import traceback

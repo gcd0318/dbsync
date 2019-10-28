@@ -3,15 +3,12 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import socket
 import re
 import sys
 sys.path.append(os.path.abspath('..'))
 
 from config import Config
-
-class Client(object):
-    def __init__(self, server_ip):
-        self.server = server_ip
 
 class Cluster(object):
     def __init__(self, node_ips=[], conf_fn='../db.conf'):

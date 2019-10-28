@@ -1,30 +1,52 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import logging
+import logging.handlers
+import os
+import sys
+sys.path.append(os.path.abspath('..'))
+
+from config import Config
+
 import socket
 
 class Client(object):
-    def __init__(self, server_host, server_port, buff_size=1024):
+    def __init__(self, name, server_host, server_port, socket_type='tcp', buff_size=1024, timeout=None, log_level=logging.DEBUG):
+        self.name = name
         self.server_addr = (server_host, server_port)
         self.buff_size = buff_size
         self.socket = None
-        self.socket_type = None
+        self.socket_type = socket_type
+        self._connect(timeout)
 
-    def connect(self, socket_type='tcp'):
-        self.socket_type = socket_type.lower()
+        self.logger = logging.getLogger(name)
+        fh = logging.handlers.TimedRotatingFileHandler(self.name + '.log', "D", 1, 10)
+        fh.setFormatter(logging.Formatter('%(asctime)s %(filename)s_%(lineno)d: [%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S'))
+        self.logger.addHandler(fh)
+        self.logger.setLevel(log_level)
+        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
+
+
+    def _connect(self, timeout=None):
         if 'tcp' == self.socket_type:
             self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             self.socket.connect(self.server_addr)
         elif 'udp' == self.socket_type:
             self.socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        if timeout is not None:
+            self.socket.settimeout(timeout)
 
     def send_msg(self, msg):
-        print(msg)
+        res = ''
         if 'tcp' == self.socket_type:
             self.socket.send(msg.encode('utf-8'))
             res = self.socket.recv(self.buff_size)
-
         elif 'udp' == self.socket_type:
             self.socket.sendto(msg.encode('utf-8'), self.server_addr)
             resp, addr = self.socket.recvfrom(self.buff_size)
-            res = {'resp': resp, 'addr': addr}
+            res = {'resp': resp.decode('utf-8'), 'addr': addr}
         return res
 
     def keep_send(self, msgs=[], quit_code=''):

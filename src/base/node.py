@@ -10,7 +10,7 @@ from config import Config
 from utils.dbaccess import DB
 #from base.cluster import Cluster
 from .server import Server
-from .cluster import Client
+from .client import Client
 
 class Node(object):
     def __init__(self, conf_fn='../db.conf'):
