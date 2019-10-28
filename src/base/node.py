@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.abspath('..'))
 
 from base.config import Config
-from utils.dbaccess import DB
+from base.dbaccess import DB
 #from base.cluster import Cluster
 from base.server import Server
 from base.client import Client
@@ -33,7 +33,7 @@ class Node(object):
             print(traceback.format_exc())
 
     def status(self):
-        res = True
+        res = self.is_alive()
         return res
 
     def is_alive(self):
