@@ -21,7 +21,7 @@ class HeartBeatServer(Server):
         conf = Config(conf_fn).read_data()
         host = conf.get('ip', '127.0.0.1')
         self.port = int(conf.get('hb_port'))
-        Server.__init__(self, 'heartbeat', host, self.port, log_level)
+        self.server = Server.__init__(self, 'heartbeat', host, self.port, log_level)
         self.node = Node(conf_fn)
         self.cluster = Cluster()
 
