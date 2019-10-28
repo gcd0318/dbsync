@@ -38,7 +38,6 @@ class HeartBeatServer(Server):
             finally:
                 import time
                 time.sleep(5)
-                print('wait 5')
 
     def report_status(self):
         res = 'BAD'
@@ -53,7 +52,6 @@ class HeartBeatServer(Server):
             r = client.send_msg(REQ)
             print(r)
             res[ip] = (r['resp'] == 'OK') and ((ip, self.port) == r['addr'])
-        print(res)
         return res
 
     def _answer(self, msg):
