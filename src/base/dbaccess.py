@@ -18,7 +18,6 @@ class DB(object):
 
     def is_alive(self):
         r = self.exec('show tables;') 
-        print(r)
         return r is not None
 
     def exec(self, sql):

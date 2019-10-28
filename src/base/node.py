@@ -23,7 +23,7 @@ class Node(object):
             self.db = DB(
                 username=conf.get('username'),
                 password=conf.get('password'),
-                host=self.ip,
+                host='127.0.0.1',
                 port=int(conf.get('port')),
                 dbname=conf.get('dbname'),
                 dbtype=conf.get('db'))
@@ -35,7 +35,7 @@ class Node(object):
     def status(self):
         resd = {}
         resd['node'] = self.is_alive()
-        resd['DB'] = self.db.is_alive()
+        resd['db'] = self.db.is_alive()
         return resd
 
     def is_alive(self):
