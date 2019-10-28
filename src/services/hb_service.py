@@ -47,9 +47,9 @@ class HeartBeatServer(Server):
                 r = {}
                 try:
                     client = Client('heartbeat', ip, self.port, socket_type='udp', timeout=5)
-                    r = client.send_msg(REQ, False)
+                    r = client.send_msg(REQ)
                 except Exception as err:
-                    self.server.logger.debug(ip + ' is not connectable')
+                    r = {}
                 resd[ip] = r.get('resp')
         return resd
 
