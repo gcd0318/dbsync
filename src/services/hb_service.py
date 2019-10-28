@@ -33,6 +33,8 @@ class HeartBeatServer(Server):
                 print(self.cluster.ready)
             except Exception as err:
                 print(err)
+                import traceback
+                print(traceback.format_exc())
             finally:
                 import time
                 time.sleep(5)

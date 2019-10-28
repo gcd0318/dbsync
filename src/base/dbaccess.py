@@ -1,13 +1,13 @@
 class DB(object):
-    def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='dbsync', dbtype='postgresql'):
-        def _connect_postgresql(dbname, username, password, host, port=5678, encoding=encoding):
+    def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='dbsync', dbtype='postgresql', timeout=60):
+        def _connect_postgresql(dbname, username, password, host, port=5678, encoding=encoding, timeout=timeout):
             import psycopg2
             return psycopg2.connect(dbname=dbname, user=username, password=password, port=port, host=host, client_encoding=encoding)
-        def _connect_mysql(dbname, username, password, host, port=5678, encoding=encoding):
+        def _connect_mysql(dbname, username, password, host, port=5678, encoding=encoding, timeout=timeout):
             from mysql.connector import connection
             if "UTF-8" == encoding:
                 encoding = 'utf8'
-            return connection.MySQLConnection(database=dbname, user=username, password=password, port=port, host=host, charset=encoding)
+            return connection.MySQLConnection(database=dbname, user=username, password=password, port=port, host=host, charset=encoding, connect_timeout=timeout)
 
         self.dbtype = dbtype
         self.conn = None
