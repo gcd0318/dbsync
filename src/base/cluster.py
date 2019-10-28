@@ -16,9 +16,17 @@ class Cluster(object):
         if not node_ips:
             conf = Config(conf_fn).read_data()
             self.node_ips = conf.get('ips', '').split()
+        self.ready = {}
+        for ip in self.node_ips:
+            self.ready[ip] = False
+
+    def update_status(self, status_dict):
+        for ip in status_dict:
+            if ip not in self.node_ips:
+                self.node_ips.append(ip)
+            self.ready[ip] = status_dict[ip]
 
     '''
-    def all_status(self, data):
         threads = []
         def runner(anode):
             data[anode.ip] = anode.status()

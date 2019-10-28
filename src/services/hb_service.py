@@ -27,32 +27,26 @@ class HeartBeatServer(Server):
 
     def start_service(self):
         threading._start_new_thread(self.udp_start, ())
-        i = 0
         while True:
             try:
-                self.check_peer()
+                self.cluster.update_status(self.check_peer())
+                print(self.cluster.ready)
             except Exception as err:
                 print(err)
-                i = i + 1
-                print('no resp in 5 seconds')
             finally:
                 import time
                 time.sleep(5)
 
     def report_status(self):
-        res = 'BAD'
-        if self.node.status():
-            res = 'OK'
-        return res
+        return str(self.node.status())
 
     def check_peer(self):
-        res = {}
+        resd = {}
         for ip in self.cluster.node_ips:
             client = Client('heartbeat', ip, self.port, socket_type='udp', timeout=5)
-            r = client.send_msg(REQ, 'BAD')
-            print(r)
-            res[ip] = (r['resp'] == 'OK') and ((ip, self.port) == r['addr'])
-        return res
+            r = client.send_msg(REQ, False)
+            resd[ip] = ('True' == r['resp']) and ((ip, self.port) == r['addr'])
+        return resd
 
     def _answer(self, msg):
         res = ''
