@@ -41,11 +41,16 @@ class HeartBeatServer(Server):
         return str(self.node.status())
 
     def check_peer(self):
-        resd = {}
+        resd = {self.node.ip: self.node.status()}
         for ip in self.cluster.node_ips:
-            client = Client('heartbeat', ip, self.port, socket_type='udp', timeout=5)
-            r = client.send_msg(REQ, False)
-            resd[ip] = ('True' == r['resp']) and ((ip, self.port) == r['addr'])
+            if(ip != self.node.ip):
+                r = {}
+                try:
+                    client = Client('heartbeat', ip, self.port, socket_type='udp', timeout=5)
+                    r = client.send_msg(REQ, False)
+                except Exception as err:
+                    pass
+                resd[ip] = ('True' == r.get('resp')) and ((ip, self.port) == r.get('addr'))
         return resd
 
     def _answer(self, msg):
