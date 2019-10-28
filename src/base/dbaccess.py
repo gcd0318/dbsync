@@ -1,5 +1,5 @@
 class DB(object):
-    def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='cicada', dbtype='postgresql'):
+    def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='dbsync', dbtype='postgresql'):
         def _connect_postgresql(dbname, username, password, host, port=5678, encoding=encoding):
             import psycopg2
             return psycopg2.connect(dbname=dbname, user=username, password=password, port=port, host=host, client_encoding=encoding)
@@ -17,7 +17,9 @@ class DB(object):
             self.conn = _connect_mysql(dbname, username, password, host, port, encoding)
 
     def is_alive(self):
-        return self.exec('show tables;') is not None
+        r = self.exec('show tables;') 
+        print(r)
+        return r is not None
 
     def exec(self, sql):
         sql = sql.strip()
