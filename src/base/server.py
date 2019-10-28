@@ -47,12 +47,17 @@ class Server(object):
                 msg, addr = server_sock.recvfrom(buff_size)
                 server_sock.sendto(self.reply(addr, msg), addr)
 
+    def _answer(self, msg):
+        res = msg
+
     def reply(self, *req):
         self.logger.debug('REQ: ' + str(req))
-        res = ''
+        msg = ''
         for i in req:
-            res = res + ' ' + str(i)
-        res = res.strip()
+            msg = msg + ' ' + str(i)
+        msg = msg.strip()
+
+        res = self._answer(msg)
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')
 
