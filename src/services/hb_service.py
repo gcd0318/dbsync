@@ -10,6 +10,5 @@ class HeartBeatServer(Server):
 
 node = Node()
 
-
 hb_server = HeartBeatServer()
 hb_server.start('udp')

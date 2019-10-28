@@ -1,11 +1,16 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import os
 import sys
-sys.path.append('..')
+sys.path.append(os.path.abspath('..'))
 
 from config import Config
-from dbaccess import DB
+from utils.dbaccess import DB
 #from base.cluster import Cluster
-from ..server import Server
-from ..client import Client
+from server import Server
+from client import Client
 
 class Node(object):
     def __init__(self, conf_fn='../db.conf'):
@@ -18,7 +23,7 @@ class Node(object):
             self.db = DB(
                 username=conf.get('username'),
                 password=conf.get('password'),
-                host=self.host,
+                host=self.ip,
                 port=int(conf.get('port')),
                 dbname=conf.get('dbname'),
                 dbtype=conf.get('db'))
