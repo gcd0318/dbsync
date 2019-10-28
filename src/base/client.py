@@ -8,8 +8,6 @@ import os
 import sys
 sys.path.append(os.path.abspath('..'))
 
-from config import Config
-
 import socket
 
 class Client(object):

@@ -6,11 +6,11 @@ import os
 import sys
 sys.path.append(os.path.abspath('..'))
 
-from config import Config
+from base.config import Config
 from utils.dbaccess import DB
 #from base.cluster import Cluster
-from .server import Server
-from .client import Client
+from base.server import Server
+from base.client import Client
 
 class Node(object):
     def __init__(self, conf_fn='../db.conf'):

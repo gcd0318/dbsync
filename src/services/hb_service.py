@@ -12,7 +12,7 @@ from base.server import Server
 from base.node import Node
 from base.client import Client
 from base.cluster import Cluster
-from config import Config
+from base.config import Config
 
 REQ = 'CHECK STATUS FROM'
 

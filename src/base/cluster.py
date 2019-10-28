@@ -8,7 +8,7 @@ import re
 import sys
 sys.path.append(os.path.abspath('..'))
 
-from config import Config
+from base.config import Config
 
 class Cluster(object):
     def __init__(self, node_ips=[], conf_fn='../db.conf'):
