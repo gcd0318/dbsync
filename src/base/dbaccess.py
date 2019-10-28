@@ -16,6 +16,9 @@ class DB(object):
         elif(self.dbtype in ('mysql', 'mariadb')):
             self.conn = _connect_mysql(dbname, username, password, host, port, encoding)
 
+    def is_alive(self):
+        return self.exec('show tables;') is not None
+
     def exec(self, sql):
         sql = sql.strip()
         action, *_ = sql.split()

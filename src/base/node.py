@@ -33,8 +33,10 @@ class Node(object):
             print(traceback.format_exc())
 
     def status(self):
-        res = self.is_alive()
-        return res
+        resd = {}
+        resd['node'] = self.is_alive()
+        resd['DB'] = self.db.is_alive()
+        return resd
 
     def is_alive(self):
         return True
