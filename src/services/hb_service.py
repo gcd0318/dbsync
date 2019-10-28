@@ -50,7 +50,7 @@ class HeartBeatServer(Server):
                     r = client.send_msg(REQ, False)
                 except Exception as err:
                     self.server.logger.debug(ip + ' is not connectable')
-                resd[ip] = ('True' == r.get('resp')) and ((ip, self.port) == r.get('addr'))
+                resd[ip] = r.get('resp')
         return resd
 
     def _answer(self, msg):
