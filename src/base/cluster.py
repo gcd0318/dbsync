@@ -1,4 +1,4 @@
-class Client(self):
+class Client(object):
     def __init__(self, server_ip):
         self.server = server_ip
 

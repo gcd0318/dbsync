@@ -1,0 +1,11 @@
+[Unit]
+Description=dbsync heartbeat
+After=network.target
+
+[Service]
+WorkingDirectory=/home/gcd0318/work/dbsync/src/services
+ExecStart=python hb_service.py
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

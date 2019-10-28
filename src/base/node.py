@@ -9,8 +9,8 @@ sys.path.append(os.path.abspath('..'))
 from config import Config
 from utils.dbaccess import DB
 #from base.cluster import Cluster
-from server import Server
-from client import Client
+from .server import Server
+from .cluster import Client
 
 class Node(object):
     def __init__(self, conf_fn='../db.conf'):
