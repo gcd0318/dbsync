@@ -49,7 +49,7 @@ class HeartBeatServer(Server):
         res = {}
         for ip in self.cluster.node_ips:
             client = Client('heartbeat', ip, self.port, socket_type='udp', timeout=5)
-            r = client.send_msg(REQ)
+            r = client.send_msg(REQ, 'BAD')
             print(r)
             res[ip] = (r['resp'] == 'OK') and ((ip, self.port) == r['addr'])
         return res

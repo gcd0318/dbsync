@@ -36,8 +36,9 @@ class Client(object):
         if timeout is not None:
             self.socket.settimeout(timeout)
 
-    def send_msg(self, msg):
-        res = ''
+    def send_msg(self, msg, default_resp=''):
+        resp = default_resp
+        res = None
         if 'tcp' == self.socket_type:
             self.socket.send(msg.encode('utf-8'))
             res = self.socket.recv(self.buff_size)
