@@ -35,3 +35,8 @@ class DB(object):
         else:
             pass
         return res
+
+if __name__ == '__main__':
+    db = DB(host='127.0.0.1', port=3306, dbtype='mariadb', username='dbsync', password='dbsync', dbname='dbsync')
+    r = db.exec('show tables;')
+    print(r)
