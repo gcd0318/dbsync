@@ -15,8 +15,8 @@ class Server(object):
     def tcp_start(self, max_conn=10, buff_size=1024, quit_code=''):
         self._start('tcp', max_conn, buff_size, quit_code)
 
-    def udp_start(self, max_conn=10, buff_size=1024, quit_code=''):
-        self._start('udp', max_conn, buff_size, quit_code)
+    def udp_start(self, max_conn=10, buff_size=1024):
+        self._start('udp', max_conn, buff_size)
 
     def _start(self, socket_type='tcp', max_conn=10, buff_size=1024, quit_code=''):
         socket_type = socket_type.lower()
