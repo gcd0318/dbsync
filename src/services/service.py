@@ -17,15 +17,16 @@ from base.config import Config
 REQ = 'CHECK STATUS FROM'
 
 class Service(Server):
-    def __init__(self, name='dbservice', conf_fn='../db.conf', log_level=logging.DEBUG):
-        UDPService.__init__(self, name)
-        self.node = Node(conf_fn)
-        self.cluster = Cluster()
+    def __init__(self, name, conf_fn='../db.conf', log_level=logging.DEBUG):
+        self.conf = Config(conf_fn).read_data()
+        host = self.conf.get('ip', '127.0.0.1')
+        self.port = int(self.conf.get('hb_port'))
+        self.server = Server.__init__(self, name, host, self.port, log_level)
 
 class TCPService(Service):
     def start_service(self):
         threading._start_new_thread(self.tcp_start, ())
 
-def UDPService(Service):
+class UDPService(Service):
     def start_service(self):
         threading._start_new_thread(self.udp_start, ())
