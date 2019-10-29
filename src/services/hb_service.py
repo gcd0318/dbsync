@@ -19,8 +19,8 @@ from service import UDPService
 REQ = 'CHECK STATUS FROM'
 
 class HeartBeatServer(UDPService):
-    def __init__(self, name='heartbeat', conf_fn='../db.conf', log_level=logging.DEBUG):
-        UDPService.__init__(self, name, conf_fn, log_level)
+    def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
+        UDPService.__init__(self, 'heartbeat', conf_fn, log_level)
         self.node = Node(conf_fn)
         self.cluster = Cluster()
 

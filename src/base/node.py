@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.abspath('..'))
 
 from base.config import Config
-from base.dbaccess import DB
+from base.data import DB
 #from base.cluster import Cluster
 from base.server import Server
 from base.client import Client
@@ -16,7 +16,7 @@ class Node(object):
     def __init__(self, conf_fn='../db.conf'):
         conf = Config(conf_fn).read_data()
         self.ip = conf.get('ip', '127.0.0.1')
-        self.hb_port = int(conf.get('hb_port'))
+        self.hb_port = int(conf.get('heartbeat_port'))
         self.ips = conf.get('ips')
         self.db = None
         try:

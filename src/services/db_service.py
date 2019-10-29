@@ -11,15 +11,15 @@ import threading
 from base.client import Client
 from base.cluster import Cluster
 from base.config import Config
-from base.dbaccess import DB
+from base.data import DB
 from base.node import Node
 from base.server import Server
 
 from service import TCPService
 
 class DBService(TCPService):
-    def __init__(self, name='dbservice', conf_fn='../db.conf', log_level=logging.DEBUG):
-        TCPService.__init__(self, name, conf_fn, log_level)
+    def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
+        TCPService.__init__(self, 'data', conf_fn, log_level)
         self.node = Node(conf_fn)
         self.cluster = Cluster()
 
