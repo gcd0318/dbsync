@@ -14,19 +14,18 @@ from base.client import Client
 from base.cluster import Cluster
 from base.config import Config
 
+from service import Service
+
 REQ = 'CHECK STATUS FROM'
 
-class HeartBeatServer(Server):
-    def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
-        conf = Config(conf_fn).read_data()
-        host = conf.get('ip', '127.0.0.1')
-        self.port = int(conf.get('hb_port'))
-        self.server = Server.__init__(self, 'heartbeat', host, self.port, log_level)
+class HeartBeatServer(Service):
+    def __init__(self, name='heartbeat', conf_fn='../db.conf', log_level=logging.DEBUG):
+        Service.__init__(self, name)
         self.node = Node(conf_fn)
         self.cluster = Cluster()
 
     def start_service(self):
-        threading._start_new_thread(self.udp_start, ())
+        super().start_service()
         while True:
             try:
                 self.cluster.update_status(self.check_peer())
