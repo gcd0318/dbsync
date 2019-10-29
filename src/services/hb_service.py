@@ -14,13 +14,13 @@ from base.client import Client
 from base.cluster import Cluster
 from base.config import Config
 
-from service import Service
+from service import UDPService
 
 REQ = 'CHECK STATUS FROM'
 
-class HeartBeatServer(Service):
+class HeartBeatServer(UDPService):
     def __init__(self, name='heartbeat', conf_fn='../db.conf', log_level=logging.DEBUG):
-        Service.__init__(self, name)
+        UDPService.__init__(self, name)
         self.node = Node(conf_fn)
         self.cluster = Cluster()
 
