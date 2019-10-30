@@ -44,7 +44,7 @@ class TCPClient(Client):
     def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
         Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG)
         self._connect(timeout)
-        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
+        self.logger.info('connected to ' + server_host + ' as a tcp client')
 
     def _connect(self, timeout=None):
         self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -63,7 +63,7 @@ class UDPClient(Client):
     def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
         Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG)
         self._connect(timeout)
-        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
+        self.logger.info('connected to ' + server_host + ' as a udp client')
 
     def _connect(self, timeout=None):
         self.socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
