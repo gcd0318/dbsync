@@ -22,14 +22,6 @@ class Client(object):
         self.logger.addHandler(fh)
         self.logger.setLevel(log_level)
 
-    def keep_send(self, msgs=[], quit_code=''):
-        resl = []
-#        if ('tcp' == self.socket_type) and (not quit_code in msgs):
-#            msgs.append(quit_code)
-        for msg in msgs:
-            resl.append(self.send_msg(str(msg)))
-        return resl
-
 
     def close(self):
         if self.socket is not None:
@@ -59,6 +51,13 @@ class TCPClient(Client):
         res = self.socket.recv(self.buff_size)
         return res
 
+    def keep_send(self, msgs=[], quit_code=''):
+        resl = []
+        for msg in msgs:
+            resl.append(self.send_msg(str(msg)))
+        return resl
+
+
 class UDPClient(Client):
     def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
         Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG)
@@ -84,14 +83,10 @@ if '__main__' == __name__:
     HOST = '192.168.56.101'
     PORT = 9999
 
-    server_type = 'tcp'
-    if 1 < len(sys.argv):
-        server_type = sys.argv[1]
- 
-    c = Client(HOST, PORT)
-    c.connect(server_type)
+    c = TCPClient('', HOST, PORT)
     l = [1, 2, 3, 4, 5]
     resl = c.keep_send(l)
+    print(c.send_msg('test'))
     c.close()
     for i in range(0, len(l)):
         print(i, l[i], resl[i])

@@ -64,13 +64,13 @@ if '__main__' == __name__:
     HOST = '192.168.56.101'
     PORT = 9999
 
-    serv = Server(name='sample', host=HOST, port=PORT)
+    serv = TCPServer(name='sample', host=HOST, port=PORT)
     server_type = 'tcp'
     if 1 < len(sys.argv):
         server_type = sys.argv[1]
     while True:
         try:
-            serv._start(server_type)
+            serv.start()
         except Exception as err:
             print(err)
             import traceback
