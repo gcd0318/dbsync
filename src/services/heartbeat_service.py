@@ -16,7 +16,7 @@ from base.config import Config
 
 from service import UDPService
 
-REQ = 'CHECK STATUS FROM '
+REQ = '[CHECK]'
 
 class HeartBeatServer(UDPService):
     def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
@@ -43,10 +43,11 @@ class HeartBeatServer(UDPService):
         return str(self.node.status())
 
     def check_peer(self):
-        return {**{self.node.ip: self.node.status()}, **self._threading_check({}, self.cluster.node_ips)} 
+        return {**{self.node.ip: self.node.status()}, **self._threading_check(self.cluster.node_ips)} 
 
-    def _threading_check(self, resd, ips):
+    def _threading_check(self, ips):
         threads = []
+        resd = {}
 
         def runner(resd, ip):
             r = {}
