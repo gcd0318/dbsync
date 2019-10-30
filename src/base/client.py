@@ -11,42 +11,16 @@ sys.path.append(os.path.abspath('..'))
 import socket
 
 class Client(object):
-    def __init__(self, name, server_host, server_port, socket_type='tcp', buff_size=1024, timeout=None, log_level=logging.DEBUG):
+    def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
         self.name = name
         self.server_addr = (server_host, server_port)
         self.buff_size = buff_size
         self.socket = None
-        self.socket_type = socket_type
-        self._connect(timeout)
-
         self.logger = logging.getLogger(name)
         fh = logging.handlers.TimedRotatingFileHandler(self.name + '.log', "D", 1, 10)
         fh.setFormatter(logging.Formatter('%(asctime)s %(filename)s_%(lineno)d: [%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S'))
         self.logger.addHandler(fh)
         self.logger.setLevel(log_level)
-        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
-
-
-    def _connect(self, timeout=None):
-        if 'tcp' == self.socket_type:
-            self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            self.socket.connect(self.server_addr)
-        elif 'udp' == self.socket_type:
-            self.socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        if timeout is not None:
-            self.socket.settimeout(timeout)
-
-    def send_msg(self, msg, default_resp=None):
-        resp = str(default_resp)
-        res = None
-        if 'tcp' == self.socket_type:
-            self.socket.send(msg.encode('utf-8'))
-            res = self.socket.recv(self.buff_size)
-        elif 'udp' == self.socket_type:
-            self.socket.sendto(msg.encode('utf-8'), self.server_addr)
-            resp, addr = self.socket.recvfrom(self.buff_size)
-            res = {'resp': resp.decode('utf-8'), 'addr': addr}
-        return res
 
     def keep_send(self, msgs=[], quit_code=''):
         resl = []
@@ -65,6 +39,43 @@ class Client(object):
     def __del__(self):
         if self.socket is not None:
             self.close()
+
+class TCPClient(Client):
+    def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
+        Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG)
+        self._connect(timeout)
+        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
+
+    def _connect(self, timeout=None):
+        self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.socket.connect(self.server_addr)
+        if timeout is not None:
+            self.socket.settimeout(timeout)
+
+
+    def send_msg(self, msg, default_resp=None):
+        resp = str(default_resp)
+        self.socket.send(msg.encode('utf-8'))
+        res = self.socket.recv(self.buff_size)
+        return res
+
+class UDPClient(Client):
+    def __init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG):
+        Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=None, log_level=logging.DEBUG)
+        self._connect(timeout)
+        self.logger.info('connected to ' + server_host + ' as a ' + socket_type + ' client')
+
+    def _connect(self, timeout=None):
+        self.socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        if timeout is not None:
+            self.socket.settimeout(timeout)
+
+    def send_msg(self, msg, default_resp=None):
+        resp = str(default_resp)
+        self.socket.sendto(msg.encode('utf-8'), self.server_addr)
+        resp, addr = self.socket.recvfrom(self.buff_size)
+        res = {'resp': resp.decode('utf-8'), 'addr': addr}
+        return res
 
 
 if '__main__' == __name__:

@@ -10,7 +10,7 @@ import threading
 
 from base.server import Server
 from base.node import Node
-from base.client import Client
+from base.client import UDPClient
 from base.cluster import Cluster
 from base.config import Config
 
@@ -47,7 +47,7 @@ class HeartBeatServer(UDPService):
             if(ip != self.node.ip):
                 r = {}
                 try:
-                    client = Client(self.name, ip, self.port, socket_type='udp', timeout=5)
+                    client = UDPClient(self.name, ip, self.port,, timeout=5)
                     r = client.send_msg(REQ)
                 except Exception as err:
                     r = {}
