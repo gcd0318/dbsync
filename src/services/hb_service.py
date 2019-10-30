@@ -31,6 +31,7 @@ class HeartBeatServer(UDPService):
                 self.cluster.update_status(self.check_peer())
                 print(self.cluster.ready)
             except Exception as err:
+                pass
                 print(err)
                 import traceback
                 print(traceback.format_exc())
@@ -42,21 +43,33 @@ class HeartBeatServer(UDPService):
         return str(self.node.status())
 
     def check_peer(self):
-        resd = {self.node.ip: self.node.status()}
-        for ip in self.cluster.node_ips:
-            if(ip != self.node.ip):
-                print(ip)
+        d1 = {self.node.ip: self.node.status()}
+        d2 = self._threading_check({}, self.cluster.node_ips)
+        return {**d1, **d2} 
+
+    def _threading_check(self, resd, ips):
+        threads = []
+
+        def runner(resd, ip):
+            r = {}
+            try:
+                client = UDPClient(self.name, ip, self.node.heartbeat_port, timeout=5)
+                r = client.send_msg(REQ + self.node.ip)
+            except Exception as err:
+#                print(err)
+#                import traceback
+#                print(traceback.format_exc())
                 r = {}
-                try:
-                    client = UDPClient(self.name, ip, self.node.heartbeat_port, timeout=5)
-                    r = client.send_msg(REQ + self.node.ip)
-                except Exception as err:
-                    print(err)
-                    import traceback
-                    print(traceback.format_exc())
-                    r = {}
-                print(r)
-                resd[ip] = r.get('resp')
+            print(r)
+            resd[ip] = r.get('resp')
+
+        for ip in ips:
+            _t = threading.Thread(target=runner, args=(resd, ip))
+            _t.start()
+            threads.append(_t)
+
+        for _t in threads:
+            _t.join()
         return resd
 
     def _answer(self, msg):
