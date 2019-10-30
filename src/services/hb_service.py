@@ -48,7 +48,7 @@ class HeartBeatServer(UDPService):
                 r = {}
                 try:
                     client = UDPClient(self.name, ip, self.port, timeout=5)
-                    r = client.send_msg(REQ)
+                    r = client.send_msg(REQ + self.node.ip)
                 except Exception as err:
                     r = {}
                 resd[ip] = r.get('resp')
