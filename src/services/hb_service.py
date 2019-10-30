@@ -60,7 +60,7 @@ class HeartBeatServer(UDPService):
 #                import traceback
 #                print(traceback.format_exc())
                 r = {}
-            print(r)
+#            print(r)
             resd[ip] = r.get('resp')
 
         for ip in ips:
@@ -76,7 +76,7 @@ class HeartBeatServer(UDPService):
         res = ''
         if REQ in msg:
             res = self.report_status()
-        print(res)
+#        print(res)
         return res
 
 if '__main__' == __name__:
