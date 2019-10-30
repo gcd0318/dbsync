@@ -12,40 +12,6 @@ class Server(object):
         self.logger.addHandler(fh)
         self.logger.setLevel(log_level)
 
-    def tcp_start(self, max_conn=10, buff_size=1024, quit_code=''):
-        self._start('tcp', max_conn, buff_size, quit_code)
-
-    def udp_start(self, max_conn=10, buff_size=1024):
-        self._start('udp', max_conn, buff_size)
-
-    def _start(self, socket_type='tcp', max_conn=10, buff_size=1024, quit_code=''):
-        socket_type = socket_type.lower()
-        self.logger.debug('starting ' + self.name + ' as a ' + socket_type)
-
-        if 'tcp' == socket_type:
-            server_sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            server_sock.bind(self.addr)
-            server_sock.listen(max_conn)
-            self.logger.debug(socket_type + 'service started: ' + str(self.addr))
-            while True:
-                client_sock, addr = server_sock.accept()
-                self.logger.debug('connected from ' + str(addr))
-                msg = client_sock.recv(buff_size).decode('utf-8')
-                while (msg is not None) and (msg.lower() != quit_code):
-                    if msg is not None:
-                        client_sock.send(self.reply(addr, msg))
-                    msg = client_sock.recv(buff_size).decode('utf-8')
-                client_sock.close()
-                self.logger.debug(str(addr) + ' quit')
-            server_sock.close()
-        elif 'udp' == socket_type:
-            self.logger.debug(socket_type + 'service started: ' + str(self.addr))
-            server_sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-            server_sock.bind(self.addr)
-            while True:
-                msg, addr = server_sock.recvfrom(buff_size)
-                server_sock.sendto(self.reply(addr, msg), addr)
-
     def _answer(self, msg):
         res = msg
         return res
@@ -58,6 +24,36 @@ class Server(object):
         res = self._answer(msg.strip())
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')
+
+class TCPServer(Server):
+    def start(self, max_conn=10, buff_size=1024, quit_code=''):
+        self.logger.debug('starting ' + self.name + ' as a tcp server')
+
+        server_sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        server_sock.bind(self.addr)
+        server_sock.listen(max_conn)
+        self.logger.debug(self.name + 'service started: ' + str(self.addr))
+        while True:
+            client_sock, addr = server_sock.accept()
+            self.logger.debug('connected from ' + str(addr))
+            msg = client_sock.recv(buff_size).decode('utf-8')
+            while (msg is not None) and (msg.lower() != quit_code):
+                if msg is not None:
+                    client_sock.send(self.reply(addr, msg))
+                msg = client_sock.recv(buff_size).decode('utf-8')
+            client_sock.close()
+            self.logger.debug(str(addr) + ' quit')
+        server_sock.close()
+
+class UDPServer(Server):
+    def start(self, max_conn=10, buff_size=1024, quit_code=''):
+        self.logger.debug('starting ' + self.name + ' as a udp server')
+        server_sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        server_sock.bind(self.addr)
+        self.logger.debug(self.name + 'service started: ' + str(self.addr))
+        while True:
+            msg, addr = server_sock.recvfrom(buff_size)
+            server_sock.sendto(self.reply(addr, msg), addr)
 
 
 if '__main__' == __name__:
