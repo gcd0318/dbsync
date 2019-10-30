@@ -13,7 +13,7 @@ from base.server import Server
 from base.client import Client
 
 class Node(object):
-    def __init__(self, conf_fn='../db.conf'):
+    def __init__(self, conf_fn='../dbsync.conf'):
         conf = Config(conf_fn).read_data()
         self.ip = conf.get('ip', '127.0.0.1')
         self.heartbeat_port = int(conf.get('heartbeat_port'))
@@ -68,6 +68,6 @@ class Node(object):
 
 
 if '__main__' == __name__:
-    node = Node('../db.conf')
+    node = Node('../dbsync.conf')
     print(node.ips)
     print(node.db.exec('show tables;'))

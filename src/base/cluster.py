@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath('..'))
 from base.config import Config
 
 class Cluster(object):
-    def __init__(self, node_ips=[], conf_fn='../db.conf'):
+    def __init__(self, node_ips=[], conf_fn='../dbsync.conf'):
         self.node_ips = node_ips
         if not node_ips:
             conf = Config(conf_fn).read_data()

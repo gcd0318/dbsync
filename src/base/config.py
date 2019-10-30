@@ -50,7 +50,7 @@ class Config(ConfigParser):
 
 
 if '__main__' == __name__:
-    conf = Config('db.conf')
+    conf = Config('dbsync.conf')
     print(conf.read_data())
     conf.write_data('cluster', 'test', 'test1')
     print(conf.read_data())

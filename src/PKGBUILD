@@ -49,5 +49,5 @@ check() {
 package() {
 	cd "$pkgname-$pkgver"
 	make DESTDIR="$pkgdir/" install
-	install -m=775 db.conf "${pkgdir}/etc"
+	install -m=775 dbconf.conf "${pkgdir}/etc"
 }

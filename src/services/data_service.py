@@ -20,7 +20,7 @@ from service import TCPService
 REQ = '[SQL]'
 
 class DBService(TCPService):
-    def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
+    def __init__(self, conf_fn='../dbsync.conf', log_level=logging.DEBUG):
         self.node = Node(conf_fn)
         TCPService.__init__(self, 'data', self.node.ip, self.node.data_port, log_level)
         self.cluster = Cluster()

@@ -19,7 +19,7 @@ from service import UDPService
 REQ = '[CHECK]'
 
 class HeartBeatServer(UDPService):
-    def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
+    def __init__(self, conf_fn='../dbsync.conf', log_level=logging.DEBUG):
         self.node = Node(conf_fn)
         UDPService.__init__(self, 'heartbeat', self.node.ip, self.node.heartbeat_port, log_level)
         self.cluster = Cluster()
