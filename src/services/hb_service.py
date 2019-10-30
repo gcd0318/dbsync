@@ -16,14 +16,13 @@ from base.config import Config
 
 from service import UDPService
 
-REQ = 'CHECK STATUS FROM'
+REQ = 'CHECK STATUS FROM '
 
 class HeartBeatServer(UDPService):
     def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
         self.node = Node(conf_fn)
         UDPService.__init__(self, 'heartbeat', self.node.ip, self.node.heartbeat_port, log_level)
         self.cluster = Cluster()
-        self.client = UDPClient(self.name, self.node.ip, self.node.heartbeat_port, timeout=5)
 
     def start_service(self):
         super().start_service()
@@ -49,7 +48,8 @@ class HeartBeatServer(UDPService):
                 print(ip)
                 r = {}
                 try:
-                    r = self.client.send_msg(REQ + self.node.ip)
+                    client = UDPClient(self.name, ip, self.node.heartbeat_port, timeout=5)
+                    r = client.send_msg(REQ + self.node.ip)
                 except Exception as err:
                     print(err)
                     import traceback
