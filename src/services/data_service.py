@@ -28,6 +28,7 @@ class DBService(TCPService):
             client = Client(self.name, ip, self.port, socket_type='tcp', timeout=5)
             client.send_msg(sql)
 
+
 if '__main__' == __name__:
     dbs = DBService()
     dbs.start_service()
