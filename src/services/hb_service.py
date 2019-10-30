@@ -43,9 +43,7 @@ class HeartBeatServer(UDPService):
         return str(self.node.status())
 
     def check_peer(self):
-        d1 = {self.node.ip: self.node.status()}
-        d2 = self._threading_check({}, self.cluster.node_ips)
-        return {**d1, **d2} 
+        return {**{self.node.ip: self.node.status()}, **self._threading_check({}, self.cluster.node_ips)} 
 
     def _threading_check(self, resd, ips):
         threads = []
