@@ -16,7 +16,8 @@ class Node(object):
     def __init__(self, conf_fn='../db.conf'):
         conf = Config(conf_fn).read_data()
         self.ip = conf.get('ip', '127.0.0.1')
-        self.hb_port = int(conf.get('heartbeat_port'))
+        self.heartbeat_port = int(conf.get('heartbeat_port'))
+        self.data_port = int(conf.get('data_port'))
         self.ips = conf.get('ips')
         self.db = None
         try:

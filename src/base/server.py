@@ -6,6 +6,8 @@ class Server(object):
     def __init__(self, name, host, port, log_level=logging.DEBUG):
         self.addr = (host, port)
         self.name = name
+#        self.host = host
+#        self.port = port
         self.logger = logging.getLogger(name)
         fh = logging.handlers.TimedRotatingFileHandler(name + '.log', "D", 1, 10)
         fh.setFormatter(logging.Formatter('%(asctime)s %(filename)s_%(lineno)d: [%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S'))
@@ -28,7 +30,6 @@ class Server(object):
 class TCPServer(Server):
     def start(self, max_conn=10, buff_size=1024, quit_code=''):
         self.logger.debug('starting ' + self.name + ' as a tcp server')
-
         server_sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         server_sock.bind(self.addr)
         server_sock.listen(max_conn)

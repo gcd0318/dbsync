@@ -20,9 +20,10 @@ REQ = 'CHECK STATUS FROM'
 
 class HeartBeatServer(UDPService):
     def __init__(self, conf_fn='../db.conf', log_level=logging.DEBUG):
-        UDPService.__init__(self, 'heartbeat', conf_fn, log_level)
         self.node = Node(conf_fn)
+        UDPService.__init__(self, 'heartbeat', self.node.ip, self.node.heartbeat_port, log_level)
         self.cluster = Cluster()
+        self.client = UDPClient(self.name, self.node.ip, self.node.heartbeat_port, timeout=5)
 
     def start_service(self):
         super().start_service()
@@ -45,12 +46,16 @@ class HeartBeatServer(UDPService):
         resd = {self.node.ip: self.node.status()}
         for ip in self.cluster.node_ips:
             if(ip != self.node.ip):
+                print(ip)
                 r = {}
                 try:
-                    client = UDPClient(self.name, ip, self.port, timeout=5)
-                    r = client.send_msg(REQ + self.node.ip)
+                    r = self.client.send_msg(REQ + self.node.ip)
                 except Exception as err:
+                    print(err)
+                    import traceback
+                    print(traceback.format_exc())
                     r = {}
+                print(r)
                 resd[ip] = r.get('resp')
         return resd
 
@@ -58,6 +63,7 @@ class HeartBeatServer(UDPService):
         res = ''
         if REQ in msg:
             res = self.report_status()
+        print(res)
         return res
 
 if '__main__' == __name__:
