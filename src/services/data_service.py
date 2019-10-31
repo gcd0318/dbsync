@@ -8,16 +8,17 @@ import sys
 sys.path.append(os.path.abspath('..'))
 import threading
 
-from base.client import TCPClient
 from base.cluster import Cluster
 from base.config import Config
 from base.database import Database
 from base.node import Node
 from base.server import Server
 
+from client.data_client import DataClient, REQ
+
 from service import TCPService
 
-REQ = '[SQL]'
+
 
 class DBService(TCPService):
     def __init__(self, conf_fn='../dbsync.conf', log_level=logging.DEBUG):
@@ -36,7 +37,7 @@ class DBService(TCPService):
             r = {}
             if(self.node.ip != ip):
                 try:
-                    client = TCPClient(self.name, ip, self.node.data_port, timeout=5)
+                    client = DataClient(ip, self.node.data_port, timeout=5)
                     r = {'resp': client.send_msg(sql)}
                 except Exception as err:
                     print(err)
@@ -57,15 +58,16 @@ class DBService(TCPService):
         return resd
 
     def _answer(self, msg):
-        addr, sql = msg
+        print(msg, type(msg), len(msg))
+        addr, sql = msg.split(REQ)
         print('from', addr, 'sql to exec:', sql)
-        return self.node.database.exec(sql)
+        return str(self.node.database.exec(sql))
 
 if '__main__' == __name__:
+    import sys
+    t = 's'
+    if 1 < len(sys.argv):
+        t = sys.argv[1]
     dbs = DBService()
-    dbs.start_service()
-    import time
-    time.sleep(3)
-    while True:
-        print(dbs.spread_sql('show tables;'))
-        time.sleep(1)
+    print('server side')
+    dbs.start()

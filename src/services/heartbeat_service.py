@@ -25,7 +25,7 @@ class HeartBeatServer(UDPService):
         self.cluster = Cluster()
 
     def start_service(self):
-        super().start_service()
+        super().start_in_thread()
         while True:
             try:
                 self.cluster.update_status(self.check_peer())

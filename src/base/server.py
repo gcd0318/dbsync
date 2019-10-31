@@ -24,6 +24,7 @@ class Server(object):
         for i in req:
             msg = msg + ' ' + str(i)
         res = self._answer(msg.strip())
+        print('res:', res, type(res))
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')
 

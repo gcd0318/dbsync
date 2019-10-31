@@ -21,7 +21,6 @@ class Database(object):
         return r is not None
 
     def exec(self, sql):
-        print(sql)
         if not sql.endswith(';'):
             sql = sql + ';'
         action, *_ = sql.split()
@@ -36,6 +35,7 @@ class Database(object):
                 cursor.commit()
         else:
             pass
+        print('exec', sql, 'res:', res)
         return res
 
 if __name__ == '__main__':

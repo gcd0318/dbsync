@@ -22,9 +22,9 @@ def get_host_port(name, conf_fn):
     return host, port
 
 class TCPService(TCPServer):
-    def start_service(self):
+    def start_in_thread(self):
         threading._start_new_thread(self.start, ())
 
 class UDPService(UDPServer):
-    def start_service(self):
+    def start_in_thread(self):
         threading._start_new_thread(self.start, ())
