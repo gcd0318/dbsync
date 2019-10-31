@@ -11,7 +11,7 @@ import threading
 from base.client import TCPClient
 from base.cluster import Cluster
 from base.config import Config
-from base.data import DB
+from base.database import Database
 from base.node import Node
 from base.server import Server
 
@@ -24,6 +24,7 @@ class DBService(TCPService):
         self.node = Node(conf_fn)
         TCPService.__init__(self, 'data', self.node.ip, self.node.data_port, log_level)
         self.cluster = Cluster()
+        self.db = DB()
 
 
     def spread_sql(self, sql):
@@ -37,8 +38,8 @@ class DBService(TCPService):
             r = {}
             if(self.node.ip != ip):
                 client = TCPClient(self.name, ip, self.node.data_port, timeout=5)
-                print(sql)
-                print(client.send_msg(sql))
+#                print('sql to send:', sql)
+                print('feedback from', ip, ':', client.send_msg(sql))
             else:
                 print(ip, self.node.data_port)
             resd[ip] = r.get('resp')
@@ -52,8 +53,8 @@ class DBService(TCPService):
             _t.join()
         return resd
 
-
-
+    def _answer(self, sql):
+        return sql
 
 
 if '__main__' == __name__:

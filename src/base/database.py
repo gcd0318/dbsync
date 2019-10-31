@@ -1,4 +1,4 @@
-class DB(object):
+class Database(object):
     def __init__(self, username, password, host='127.0.0.1', port=5678, encoding="UTF-8", dbname='dbsync', dbtype='postgresql', timeout=60):
         def _connect_postgresql(dbname, username, password, host, port=5678, encoding=encoding, timeout=timeout):
             import psycopg2

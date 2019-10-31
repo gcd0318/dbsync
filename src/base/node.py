@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.abspath('..'))
 
 from base.config import Config
-from base.data import DB
+from base.database import Database
 #from base.cluster import Cluster
 from base.server import Server
 from base.client import Client
