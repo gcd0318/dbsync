@@ -13,8 +13,7 @@ from base.server import Server
 from base.client import Client
 
 class Node(object):
-    def __init__(self, conf_fn='../dbsync.conf'):
-        conf = Config(conf_fn).read_data()
+    def __init__(self, conf):
         self.ip = conf.get('ip', '127.0.0.1')
         self.heartbeat_port = int(conf.get('heartbeat_port'))
         self.data_port = int(conf.get('data_port'))

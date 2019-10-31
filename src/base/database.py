@@ -21,7 +21,8 @@ class Database(object):
         return r is not None
 
     def exec(self, sql):
-        sql = sql.strip()
+        if not sql.endswith(';'):
+            sql = sql + ';'
         action, *_ = sql.split()
         action = action.lower()
         res = None
