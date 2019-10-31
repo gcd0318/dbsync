@@ -21,13 +21,13 @@ class Node(object):
         self.ips = conf.get('ips')
         self.db = None
         try:
-            self.db = DB(
+            self.database = Database(
                 username=conf.get('username'),
                 password=conf.get('password'),
                 host='127.0.0.1',
                 port=int(conf.get('port')),
                 dbname=conf.get('dbname'),
-                dbtype=conf.get('db'))
+                dbtype=conf.get('dbtype'))
         except Exception as err:
             print(err)
             import traceback
@@ -36,7 +36,7 @@ class Node(object):
     def status(self):
         resd = {}
         resd['node'] = self.is_alive()
-        resd['db'] = self.db.is_alive()
+        resd['db'] = self.database.is_alive()
         return resd
 
     def is_alive(self):
