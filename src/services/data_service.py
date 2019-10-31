@@ -57,7 +57,7 @@ class DBService(TCPService):
         return resd
 
     def _answer(self, sql):
-        return sql
+        return self.node.database.exec(sql)
 
 
 if '__main__' == __name__:
