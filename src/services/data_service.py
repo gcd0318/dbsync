@@ -26,7 +26,7 @@ class DBService(TCPService):
         self.cluster = Cluster()
 
     def spread_sql(self, sql):
-        print(self._threading_spread_sql(sql, self.cluster.node_ips))
+        self._threading_spread_sql(sql, self.cluster.node_ips)
 
     def _threading_spread_sql(self, sql, ips):
         threads = []
@@ -56,13 +56,16 @@ class DBService(TCPService):
             _t.join()
         return resd
 
-    def _answer(self, sql):
+    def _answer(self, msg):
+        addr, sql = msg
+        print('from', addr, 'sql to exec:', sql)
         return self.node.database.exec(sql)
-
 
 if '__main__' == __name__:
     dbs = DBService()
     dbs.start_service()
     import time
     time.sleep(3)
-    dbs.spread_sql('show tables;')
+    while True:
+        print(dbs.spread_sql('show tables;'))
+        time.sleep(1)

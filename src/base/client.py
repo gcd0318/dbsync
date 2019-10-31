@@ -33,8 +33,8 @@ class Client(object):
             self.close()
 
 class TCPClient(Client):
-    def __init__(self, name, server_host, server_port, buff_size=1024, timeout=10, log_level=logging.DEBUG):
-        Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=10, log_level=logging.DEBUG)
+    def __init__(self, name, server_host, server_port, buff_size=1024, timeout=60, log_level=logging.DEBUG):
+        Client.__init__(self, name, server_host, server_port, buff_size=1024, timeout=timeout, log_level=logging.DEBUG)
         try:
             self._connect(timeout)
             self.logger.info('connected to ' + server_host + ' as a tcp client')
@@ -42,7 +42,6 @@ class TCPClient(Client):
             print(err)
             import traceback
             print(traceback.format_exc())
-
             self.logger.info('connected to ' + server_host + ' failed')
 
 
@@ -52,7 +51,6 @@ class TCPClient(Client):
         self.socket.connect(self.server_addr)
         if timeout is not None:
             self.socket.settimeout(timeout)
-
 
     def send_msg(self, msg, default_resp=None):
         resp = str(default_resp)
