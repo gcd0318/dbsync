@@ -32,9 +32,6 @@ class HeartBeatServer(UDPService):
                 print(self.cluster.ready)
             except Exception as err:
                 pass
-                print(err)
-                import traceback
-                print(traceback.format_exc())
             finally:
                 import time
                 time.sleep(5)
