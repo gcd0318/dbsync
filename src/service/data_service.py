@@ -28,7 +28,7 @@ class DataService(TCPService):
     def spread_sql(self, sql):
         resd = self._threading_spread_sql(sql, self.cluster.node_ips)
 
-    def _threading_spread_sql(self, sql, ips):
+    def _threading_spread_sql(self, sql):
         threads = []
         resd = {}
 
@@ -47,7 +47,7 @@ class DataService(TCPService):
                 r = {'resp': self.node.database.exec(sql)}
             resd[ip] = r.get('resp')
 
-        for ip in ips:
+        for ip in self.cluster.node_ips:
             _t = threading.Thread(target=runner, args=(resd, ip))
             _t.start()
             threads.append(_t)

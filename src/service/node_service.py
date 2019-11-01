@@ -30,7 +30,7 @@ class NodeService(UDPService):
 #        return res
         return {**{self.node.ip: self.node.status()}, **self._threading_check(self.cluster.node_ips)} 
 
-    def _threading_check(self, ips):
+    def _threading_check(self):
         threads = []
         resd = {}
 
@@ -46,7 +46,7 @@ class NodeService(UDPService):
 #            print(r)
             resd[ip] = r.get('resp')
 
-        for ip in ips:
+        for ip in self.cluster.node_ips:
             _t = threading.Thread(target=runner, args=(resd, ip))
             _t.start()
             threads.append(_t)
