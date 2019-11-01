@@ -11,10 +11,10 @@ sys.path.append(os.path.abspath('..'))
 from base.config import Config
 
 class Cluster(object):
-    def __init__(self, node_ips=[], conf_fn='../dbsync.conf'):
-        self.node_ips = node_ips
-        if not node_ips:
-            conf = Config(conf_fn).read_data()
+    def __init__(self, conf):
+        self.node_ips = []
+        node_ips = conf.get('node_ips')
+        if node_ips is not None:
             self.node_ips = conf.get('ips', '').split()
         self.ready = {}
         for ip in self.node_ips:

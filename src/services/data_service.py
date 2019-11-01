@@ -14,17 +14,16 @@ from base.database import Database
 from base.node import Node
 from base.server import Server
 
-from client.data_client import DataClient, REQ
+from client.data_client import DataClient
 
 from service import TCPService
 
+from base.const import SQL_REQ
 
 
-class DBService(TCPService):
+class DataService(TCPService):
     def __init__(self, conf_fn='../dbsync.conf', log_level=logging.DEBUG):
-        self.node = Node(Config(conf_fn).read_data())
-        TCPService.__init__(self, 'data', self.node.ip, self.node.data_port, log_level)
-        self.cluster = Cluster()
+        TCPService.__init__(self, 'data', conf_fn, log_level)
 
     def spread_sql(self, sql):
         self._threading_spread_sql(sql, self.cluster.node_ips)
@@ -57,9 +56,9 @@ class DBService(TCPService):
             _t.join()
         return resd
 
-    def _answer(self, msg):
-        print(msg, type(msg), len(msg))
-        addr, sql = msg.split(REQ)
+    def _answer(self, addr, msg):
+        sql = msg.replace(SQL_REQ, '')
+#        print(msg, type(msg), len(msg))
         print('from', addr, 'sql to exec:', sql)
         return str(self.node.database.exec(sql))
 
@@ -68,6 +67,6 @@ if '__main__' == __name__:
     t = 's'
     if 1 < len(sys.argv):
         t = sys.argv[1]
-    dbs = DBService()
+    dbs = DataService()
     print('server side')
     dbs.start()

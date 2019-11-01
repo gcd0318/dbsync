@@ -15,16 +15,15 @@ from base.client import Client
 class Node(object):
     def __init__(self, conf):
         self.ip = conf.get('ip', '127.0.0.1')
-        self.heartbeat_port = int(conf.get('heartbeat_port'))
-        self.data_port = int(conf.get('data_port'))
+        self.ports = {'data_port': int(conf.get('data_port')), 'node_port': int(conf.get('node_port'))}
         self.ips = conf.get('ips')
         self.db = None
         try:
             self.database = Database(
-                username=conf.get('username'),
-                password=conf.get('password'),
+                username=conf.get('dbusername'),
+                password=conf.get('dbpassword'),
                 host='127.0.0.1',
-                port=int(conf.get('port')),
+                port=int(conf.get('dbport')),
                 dbname=conf.get('dbname'),
                 dbtype=conf.get('dbtype'))
         except Exception as err:
@@ -36,6 +35,7 @@ class Node(object):
         resd = {}
         resd['node'] = self.is_alive()
         resd['db'] = self.database.is_alive()
+        print(resd)
         return resd
 
     def is_alive(self):

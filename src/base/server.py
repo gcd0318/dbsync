@@ -14,16 +14,14 @@ class Server(object):
         self.logger.addHandler(fh)
         self.logger.setLevel(log_level)
 
-    def _answer(self, msg):
+    def _answer(self, addr, msg):
         res = msg
         return res
 
     def reply(self, *req):
         self.logger.debug('REQ: ' + str(req))
-        msg = ''
-        for i in req:
-            msg = msg + ' ' + str(i)
-        res = self._answer(msg.strip())
+        addr, msg = req
+        res = self._answer(addr, msg.decode('utf-8'))
         print('res:', res, type(res))
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')

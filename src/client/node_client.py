@@ -14,32 +14,22 @@ from base.client import UDPClient
 from base.cluster import Cluster
 from base.config import Config
 
-from service import UDPService
+from services.service import UDPService
 
-REQ = '[CHECK]'
+from base.const import CHECK_REQ
 
-class HeartBeatServer(UDPService):
-    def __init__(self, conf_fn='../dbsync.conf', log_level=logging.DEBUG):
-        self.node = Node(conf_fn)
-        UDPService.__init__(self, 'heartbeat', self.node.ip, self.node.heartbeat_port, log_level)
-        self.cluster = Cluster()
-
-    def start_service(self):
-        super().start_in_thread()
-        while True:
-            try:
-                self.cluster.update_status(self.check_peer())
-                print(self.cluster.ready)
-            except Exception as err:
-                pass
-            finally:
-                import time
-                time.sleep(5)
-
-    def report_status(self):
-        return str(self.node.status())
+class NodeClient(UDPClient):
+    def __init__(self, name, ip, node_port, timeout=5, log_level=logging.DEBUG):
+        UDPClient.__init__(self, name, ip, node_port, timeout=5)
 
     def check_peer(self):
+        try:
+            res = self.send_msg(CHECK_REQ)
+        except Exception as err:
+            r = {}
+        return res
+
+
         return {**{self.node.ip: self.node.status()}, **self._threading_check(self.cluster.node_ips)} 
 
     def _threading_check(self, ips):
@@ -49,8 +39,7 @@ class HeartBeatServer(UDPService):
         def runner(resd, ip):
             r = {}
             try:
-                client = UDPClient(self.name, ip, self.node.heartbeat_port, timeout=5)
-                r = client.send_msg(REQ + self.node.ip)
+                r = self.send_msg(CHECK_REQ + self.node.ip)
             except Exception as err:
 #                print(err)
 #                import traceback
@@ -68,13 +57,10 @@ class HeartBeatServer(UDPService):
             _t.join()
         return resd
 
-    def _answer(self, msg):
-        res = ''
-        if REQ in msg:
-            res = self.report_status()
-#        print(res)
-        return res
 
 if '__main__' == __name__:
-    hb_server = HeartBeatServer()
-    hb_server.start_service()
+    nc = NodeClient('nodeclient', '192.168.56.101', 9999)
+    import time
+    while True:
+        print(nc.check_peer())
+        time.sleep(1)

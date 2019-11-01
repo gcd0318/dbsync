@@ -1,12 +1,14 @@
 [cluster]
 ips = <<ips splitted by space>>
+
 dbtype = mysql / postgresql
-port = 3306
+dbport = 3306
 dbname = <<dbname>>
-username = <<db username>>
-password = <<db password>>
+dbusername = <<db username>>
+dbpassword = <<db password>>
+
+node_port = <<port for heartbeat>>
+data_port = <<port for data access>>
 
 [node]
 ip = <<local_ip>>
-heartbeat_port = <<port for heartbeat>>
-data_port = <<port for data access>>

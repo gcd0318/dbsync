@@ -34,7 +34,7 @@ class Database(object):
             elif 'insert' == action:
                 cursor.commit()
         else:
-            pass
+            print('no connection')
         print('exec', sql, 'res:', res)
         return res
 
