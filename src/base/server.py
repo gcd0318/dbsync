@@ -21,7 +21,7 @@ class Server(object):
     def reply(self, *req):
         self.logger.debug('REQ: ' + str(req))
         addr, msg = req
-        res = self._answer(addr, msg.decode('utf-8'))
+        res = self._answer(addr, msg)
         print('res:', res, type(res))
         self.logger.debug('RESP: ' + res)
         return res.encode('utf-8')
@@ -53,7 +53,7 @@ class UDPServer(Server):
         self.logger.debug(self.name + 'service started: ' + str(self.addr))
         while True:
             msg, addr = server_sock.recvfrom(buff_size)
-            server_sock.sendto(self.reply(addr, msg), addr)
+            server_sock.sendto(self.reply(addr, msg.decode('utf-8')), addr)
 
 
 if '__main__' == __name__:

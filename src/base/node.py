@@ -6,11 +6,8 @@ import os
 import sys
 sys.path.append(os.path.abspath('..'))
 
-from base.config import Config
+from base.cluster import Cluster
 from base.database import Database
-#from base.cluster import Cluster
-from base.server import Server
-from base.client import Client
 
 class Node(object):
     def __init__(self, conf):

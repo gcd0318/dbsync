@@ -1,0 +1,29 @@
+2019-11-01 17:13:50 server.py_50: [DEBUG] starting node as a udp server
+2019-11-01 17:13:50 server.py_53: [DEBUG] nodeservice started: ('192.168.56.101', 9999)
+2019-11-01 17:14:42 server.py_22: [DEBUG] REQ: (('192.168.56.101', 53846), b'[CHECK]')
+2019-11-01 17:18:54 server.py_50: [DEBUG] starting node as a udp server
+2019-11-01 17:18:54 server.py_53: [DEBUG] nodeservice started: ('192.168.56.101', 9999)
+2019-11-01 17:19:08 server.py_22: [DEBUG] REQ: (('192.168.56.101', 33894), b'[CHECK]')
+2019-11-01 17:19:40 server.py_50: [DEBUG] starting node as a udp server
+2019-11-01 17:19:40 server.py_53: [DEBUG] nodeservice started: ('192.168.56.101', 9999)
+2019-11-01 17:19:42 server.py_22: [DEBUG] REQ: (('192.168.56.101', 33318), b'[CHECK]')
+2019-11-01 17:21:56 server.py_50: [DEBUG] starting node as a udp server
+2019-11-01 17:21:56 server.py_53: [DEBUG] nodeservice started: ('192.168.56.101', 9999)
+2019-11-01 17:21:58 server.py_22: [DEBUG] REQ: (('192.168.56.101', 46574), '[CHECK]')
+2019-11-01 17:21:58 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:16 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:16 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:17 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:17 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:18 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:18 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:19 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:19 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:20 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:20 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:21 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:21 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:22 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:22 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}
+2019-11-01 17:22:27 server.py_22: [DEBUG] REQ: (('192.168.56.101', 50151), '[CHECK]')
+2019-11-01 17:22:27 server.py_26: [DEBUG] RESP: {'node': True, 'db': True}

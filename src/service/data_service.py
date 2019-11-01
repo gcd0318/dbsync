@@ -26,7 +26,7 @@ class DataService(TCPService):
         TCPService.__init__(self, 'data', conf_fn, log_level)
 
     def spread_sql(self, sql):
-        self._threading_spread_sql(sql, self.cluster.node_ips)
+        resd = self._threading_spread_sql(sql, self.cluster.node_ips)
 
     def _threading_spread_sql(self, sql, ips):
         threads = []
