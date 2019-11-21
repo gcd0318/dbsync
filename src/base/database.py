@@ -32,7 +32,7 @@ class Database(object):
             if action in ('desc', 'select', 'show'):
                 res = cursor.fetchall()
             elif 'insert' == action:
-                cursor.commit()
+                self.conn.commit()
         else:
             print('no connection')
         print('exec', sql, 'res:', res)
