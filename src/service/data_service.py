@@ -33,19 +33,19 @@ class DataService(TCPService):
         resd = {}
 
         def runner(resd, ip):
-            r = {}
+            r = None
             if(self.node.ip != ip):
                 try:
                     client = DataClient(ip, self.node.data_port, timeout=5)
-                    r = {'resp': client.send_msg(sql)}
+                    r = client.send_msg(sql)
                 except Exception as err:
                     print(err)
                     import traceback
                     print(traceback.format_exc())
-                    r = {}
+                    r = None
             else:
-                r = {'resp': self.node.database.exec(sql)}
-            resd[ip] = r.get('resp')
+                r = self.node.database.exec(sql)
+            resd[ip] = r
 
         for ip in self.cluster.node_ips:
             _t = threading.Thread(target=runner, args=(resd, ip))
