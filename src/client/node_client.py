@@ -10,7 +10,7 @@ import threading
 
 from client import UDPClient
 
-from base.const import CHECK_REQ
+from base import CHECK_REQ
 
 class NodeClient(UDPClient):
     def __init__(self, ip, node_port, timeout=5, log_level=logging.DEBUG):

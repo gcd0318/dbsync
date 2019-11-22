@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.path.abspath('..'))
 import threading
 
-from base.const import CHECK_REQ
+from base import CHECK_REQ
 
 from service import UDPService
 
