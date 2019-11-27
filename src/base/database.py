@@ -17,8 +17,7 @@ class Database(object):
             self.conn = _connect_mysql(dbname, username, password, host, port, encoding)
 
     def is_alive(self):
-        r = self.exec('show tables;') 
-        return r is not None
+        return self.conn is not None
 
     def exec(self, sql):
         if not sql.endswith(';'):
