@@ -30,12 +30,12 @@ class Node(object):
 
     def status(self):
         resd = {}
-        resd['node'] = self.is_alive()
+        resd['node'] = self._is_alive()
         resd['db'] = self.database.is_alive()
         print(resd)
         return resd
 
-    def is_alive(self):
+    def _is_alive(self):
         return True
 
     def update_conf(self, option, value, section='node'):
