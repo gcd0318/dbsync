@@ -10,7 +10,7 @@ import threading
 
 
 from client import TCPClient
-from base import SQL_REQ
+from const import SQL_REQ
 
 
 class DataClient(TCPClient):

@@ -7,7 +7,9 @@ import sys
 sys.path.append(os.path.abspath('..'))
 
 from base.cluster import Cluster
+from base.config import Config
 from base.database import Database
+from client.data_client import DataClient
 
 class Node(object):
     def __init__(self, conf):
@@ -26,6 +28,7 @@ class Node(object):
             print(err)
             import traceback
             print(traceback.format_exc())
+#        self.dbcs = [DataClient(ip, self.ports['data_port']) for ip in self.cluster.node_ips]
 
     def status(self):
         resd = {}
@@ -63,6 +66,7 @@ class Node(object):
 
 
 if '__main__' == __name__:
-    node = Node('../dbsync.conf')
+    node = Node(Config('../dbsync.conf').read_data())
     print(node.cluster.node_ips)
+#    print(node.dbcs)
     print(node.database.exec('show tables;'))

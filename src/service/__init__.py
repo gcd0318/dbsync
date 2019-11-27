@@ -10,7 +10,6 @@ import threading
 
 from base.server import TCPServer, UDPServer
 from base.node import Node
-from base.cluster import Cluster
 from base.config import Config
 
 
@@ -18,7 +17,6 @@ class Service(object):
     def __init__(self, conf_fn='../dbsync.conf'):
         conf = Config(conf_fn).read_data()
         self.node = Node(conf)
-        self.cluster = Cluster(conf)
 
 
 class TCPService(Service, TCPServer):
