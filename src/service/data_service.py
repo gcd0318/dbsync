@@ -18,7 +18,7 @@ from client.data_client import DataClient
 
 from service import TCPService
 
-from base import SQL_REQ
+from const import SQL_REQ
 
 
 class DataService(TCPService):

@@ -1,6 +1,6 @@
 import time
 
-from base import SEP
+from const import SEP
 
 class Journal(object):
     def __init__(self, jf_path):

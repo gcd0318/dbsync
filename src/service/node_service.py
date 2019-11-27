@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.path.abspath('..'))
 import threading
 
-from base import CHECK_REQ
+from const import CHECK_REQ
 
 from service import UDPService
 
@@ -39,10 +39,9 @@ class NodeService(UDPService):
             try:
                 r = NodeClient(ip, self.node.node_port).send_msg(CHECK_REQ)
             except Exception as err:
-#                print(err)
-#                import traceback
-#                print(traceback.format_exc())
-                r = {}
+                print(err)
+                import traceback
+                print(traceback.format_exc())
 #            print(r)
             resd[ip] = r.get('resp')
 
