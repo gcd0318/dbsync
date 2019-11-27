@@ -11,11 +11,10 @@ sys.path.append(os.path.abspath('..'))
 from base.config import Config
 
 class Cluster(object):
-    def __init__(self, conf):
+    def __init__(self, ips):
         self.node_ips = []
-        node_ips = conf.get('node_ips')
-        if node_ips is not None:
-            self.node_ips = conf.get('ips', '').split()
+        for ip in ips:
+            self.node_ips.append(ip)
         self.ready = {}
         for ip in self.node_ips:
             self.ready[ip] = False

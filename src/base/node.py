@@ -13,8 +13,7 @@ class Node(object):
     def __init__(self, conf):
         self.ip = conf.get('ip', '127.0.0.1')
         self.ports = {'data_port': int(conf.get('data_port')), 'node_port': int(conf.get('node_port'))}
-        self.ips = conf.get('ips')
-        self.db = None
+        self.cluster = Cluster(conf.get('ips', '').split())
         try:
             self.database = Database(
                 username=conf.get('dbusername'),
@@ -65,5 +64,5 @@ class Node(object):
 
 if '__main__' == __name__:
     node = Node('../dbsync.conf')
-    print(node.ips)
-    print(node.db.exec('show tables;'))
+    print(node.cluster.node_ips)
+    print(node.database.exec('show tables;'))
