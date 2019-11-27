@@ -14,12 +14,6 @@ from base.cluster import Cluster
 from base.config import Config
 
 
-def get_host_port(name, conf_fn):
-    conf = Config(conf_fn).read_data()
-    host = conf.get('ip', '127.0.0.1')
-    port = int(conf.get(name + '_port'))
-    return host, port
-
 class Service(object):
     def __init__(self, conf_fn='../dbsync.conf'):
         conf = Config(conf_fn).read_data()
