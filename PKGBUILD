@@ -1,36 +1,25 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: gcd0318 <gcd0318@hotmail.com>
 
 pkgname=dbsync
-pkgver=0
+pkgver=1
 pkgrel=1
 epoch=
 pkgdesc="sync data in databases"
-arch=(any)
+arch=('any')
 url="http://github.com/gcd0318/dbsync"
 license=('GPL')
-groups=()
 depends=('python-mysql-connector')
-makedepends=()
-checkdepends=()
-optdepends=()
-provides=()
-conflicts=()
-replaces=()
-backup=()
-options=()
-#install=$pkgname.install
-#changelog=$pkgname.changelog
 source=('pkg.tar.xz')
 md5sums=('SKIP')
+backup=('dbsync.conf')
 
-noextract=()
-validpgpkeys=()
-
-srcdir='build'
+srcdir='build/src'
 pkgdir="build/$pkgname-$pkgver"
 
 prepare() {
-    cd "$srcdir"
+#    cd "$srcdir"
+    pwd
+    echo "$srcdir"
 #	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
 }
 

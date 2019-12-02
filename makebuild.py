@@ -8,7 +8,7 @@ PKG = 'pkg.tar.xz'
 #一次性打包整个根目录。空子目录会被打包。
 def make_tarxz(source_dir, output_filename):
     with tarfile.open(output_filename, "w:xz") as tar:
-        tar.add(source_dir, arcname=os.path.basename(source_dir))
+        tar.add(source_dir)#, arcname=os.path.basename(source_dir))
 
 #逐个添加文件打包，未打包空子目录。可过滤文件。
 def make_targz_one_by_one(output_filename, source_dir): 
@@ -42,5 +42,5 @@ if ('__main__' == __name__):
 
     if (src and tgt) is not None:
         if not tgt.endswith(PKG):
-            tgt = tgt + os.sep + PKG
+            tgt = tgt + '.' + PKG
         make_tarxz(src, tgt)
